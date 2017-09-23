@@ -10,6 +10,9 @@ from os import walk
 class LineBuilder:
     ind = 1
     poly = []
+    poly1 = []
+    poly2 = []
+    poly3 = []
     def __init__(self, line):
         self.line = line
         self.xs = []#list(line.get_xdata())
@@ -37,10 +40,13 @@ class LineBuilder:
                 c = '#781d8e'
             elif self.ind == 1:
                 c = '#f2e835'
+                self.poly1.append([event.xdata, event.ydata])
             elif self.ind == 2:
                 c = '#4286f4'
+                self.poly2.append([event.xdata, event.ydata])
             else:
                 c = '#C0FFEE'
+                self.poly3.append([event.xdata, event.ydata])
             p = PatchCollection(patches, color=c, alpha=0.4)
             axes[1].add_collection(p)
         
@@ -73,37 +79,50 @@ class LineBuilder:
         ax = fig2.add_axes([0, 0, 1, 1])
         # Hide spines, ticks, etc.
         ax.axis('off')
-        # Display the image.
-        #a = plt.gca()
         ax.imshow(im_data, interpolation='nearest')
         # Ensure we're displaying with square pixels and the right extent.
         # This is optional if you haven't called `plot` or anything else that might
         # change the limits/aspect.  We don't need this step in this case.
         ax.set(xlim=[0, width], ylim=[height, 0], aspect=1)
+        
         if np.shape(self.xs)[0] > 1:
             #axes[1].fill_between(self.xs, self.ys,color="green", alpha=0.5)
             self.line.set_data(self.xs, self.ys)
             self.line.figure.canvas.draw()
-            #print(self.poly)
-            patches = []
-            polygon = Polygon(self.poly, True)
-            patches.append(polygon)
-            if self.ind == 0:
-                c = '#781d8e'
-            elif self.ind == 1:
-                c = '#f2e835'
-            elif self.ind == 2:
-                c = '#4286f4'
-            else:
-                c = '#C0FFEE'
-            p = PatchCollection(patches, color=c, alpha=0.4)
-            axes[1].add_collection(p)
-        fig2.savefig(str(position) + '.jpg', dpi=dpi, transparent=True)
-        #plt.show()
-        #fig.set_size_inches(30, fig.get_figheight(), forward=True)
+            patches1 = []
+            patches2 = []
+            patches3 = []
+
+            polygon1 = Polygon(self.poly1, True)
+            patches1.append(polygon1)
+            polygon2 = Polygon(self.poly2, True)
+            patches2.append(polygon2)
+            polygon3 = Polygon(self.poly3, True)
+            patches3.append(polygon3)
+            
+            p1 = PatchCollection(patches1, color='#f2e835', alpha=0.4)
+            axes[1].add_collection(p1)
+            for patch in patches1:
+                patch.set_color('#f2e835')
+                ax.add_patch(patch)
+            
+            p2 = PatchCollection(patches2, color='#4286f4', alpha=0.4)
+            axes[1].add_collection(p2)
+            for patch2 in patches2:
+                patch2.set_color('#4286f4')
+                ax.add_patch(patch2)
+            
+            p3 = PatchCollection(patches3, color='#C0FFEE', alpha=0.4)
+            axes[1].add_collection(p3)
+            for patch3 in patches3:
+                patch3.set_color('#C0FFEE')
+                ax.add_patch(patch3)
+        
+        fig2.savefig(str(position) + '.jpg', dpi=dpi)
+        plt.show()
+        #fig2.set_size_inches(30, fig.get_figheight(), forward=True)
         print("saved %dx%d" % (width, height) )
         
-                
 # Get file names
 path = "test\\inp\\"
 files = []
