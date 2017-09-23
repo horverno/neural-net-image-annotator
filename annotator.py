@@ -93,7 +93,7 @@ class LineBuilder:
                 c = '#C0FFEE'
             p = PatchCollection(patches, color=c, alpha=0.4)
             axes[1].add_collection(p)
-        fig2.savefig('test.jpg', dpi=dpi, transparent=True)
+        fig2.savefig(str(position) + '.jpg', dpi=dpi, transparent=True)
         #plt.show()
         #fig.set_size_inches(30, fig.get_figheight(), forward=True)
         print("saved %dx%d" % (width, height) )
@@ -119,7 +119,7 @@ def load_next_image(event):
         img1 = img1[:,:,::-1]
         axes[0].imshow(img1, interpolation = 'bicubic')
         axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
-        fig.canvas.set_window_title("Neural net image annotator - " + files[0])
+        fig.canvas.set_window_title("Neural net image annotator - " + files[position])
         plt.show()
 
 fig, axes = plt.subplots(1, 2, figsize=(16,6))
