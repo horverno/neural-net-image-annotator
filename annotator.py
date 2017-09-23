@@ -37,6 +37,7 @@ class LineBuilder:
                 c = '#781d8e'
             elif self.ind == 1:
                 c = '#f2e835'
+                print("printing line")
             elif self.ind == 2:
                 c = '#4286f4'
             else:
@@ -44,8 +45,13 @@ class LineBuilder:
             p = PatchCollection(patches, color=c, alpha=0.4)
             axes[1].add_collection(p)
         
-    
-
+    def clear(self):
+        self.ind = 1
+        self.poly = []
+        self.xs = []
+        self.ys = []
+        self.line.set_data(self.xs, self.ys)
+        
     def next(self, event):
         self.ind += 1
         self.poly = []
@@ -114,21 +120,31 @@ def load_next_image(event):
     if position >= len(files):
         print("No more files")
     else:
+        global img1
+        global line
+        global patches
+        global polygon
+        global fig, axes, p, plt
+    
         print("Load next image: " + files[position])
+
         img1 = cv2.imread(path + files[position])
         img1 = img1[:,:,::-1]
         axes[0].imshow(img1, interpolation = 'bicubic')
+        axes[1].cla()
+        plt.setp(axes, xticks=[], yticks=[])
         axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
         fig.canvas.set_window_title("Neural net image annotator - " + files[position])
-        plt.show()
-
+        
+        linebuilder.clear()
+        
 fig, axes = plt.subplots(1, 2, figsize=(16,6))
 plt.subplots_adjust(bottom=0.2)
 img1 = cv2.imread(path + files[position])
 img1 = img1[:,:,::-1]
 axes[0].imshow(img1, interpolation = 'bicubic')
 axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
-fig.canvas.set_window_title("Neural net image annotator - " + files[0])
+fig.canvas.set_window_title("Neural net image annotator - " + files[position])
 
 axes[0].set_title("click to annotate")
 axes[1].set_title("preview")
