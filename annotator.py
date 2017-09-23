@@ -107,20 +107,24 @@ class LineBuilder:
             axes[1].add_collection(p1)
             for patch in patches1:
                 patch.set_color('#f2e835')
+                patch.alpha=0.4
                 ax.add_patch(patch)
             
             p2 = PatchCollection(patches2, color='#4286f4', alpha=0.4)
             axes[1].add_collection(p2)
             for patch2 in patches2:
                 patch2.set_color('#4286f4')
+                patch.alpha=0.4
                 ax.add_patch(patch2)
             
             p3 = PatchCollection(patches3, color='#C0FFEE', alpha=0.4)
             axes[1].add_collection(p3)
             for patch3 in patches3:
                 patch3.set_color('#C0FFEE')
+                patch.alpha=0.4
                 ax.add_patch(patch3)
         
+        ax.imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
         fig2.savefig(str(position) + '.jpg', dpi=dpi)
         plt.show()
         #fig2.set_size_inches(30, fig.get_figheight(), forward=True)
