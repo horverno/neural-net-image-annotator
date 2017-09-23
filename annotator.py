@@ -53,6 +53,9 @@ class LineBuilder:
     def clear(self):
         self.ind = 1
         self.poly = []
+        self.poly1 = []
+        self.poly2 = []
+        self.poly3 = []
         self.xs = []
         self.ys = []
         self.line.set_data(self.xs, self.ys)
@@ -180,7 +183,7 @@ axnextimage = plt.axes([0.25, 0.05, 0.1, 0.075])
 
 bnextimage = Button(axnextimage, 'Next image')
 bnextimage.on_clicked(load_next_image)
-bnext = Button(axnext, 'Next')
+bnext = Button(axnext, 'Next annotation type')
 bnext.on_clicked(linebuilder.next)
 bprev = Button(axsave, 'Save')
 bprev.on_clicked(linebuilder.save)
