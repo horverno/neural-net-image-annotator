@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
+from os import walk
 
 class LineBuilder:
     ind = 1
@@ -98,14 +99,36 @@ class LineBuilder:
         print("saved %dx%d" % (width, height) )
         
                 
+# Get file names
+path = "test\\inp\\"
+files = []
+position = 0
+for (dirpath, dirnames, filenames) in walk(path):
+    files.extend(filenames)
+    break
+
+def load_next_image(event):
+    global position
+    position += 1
+    
+    if position >= len(files):
+        print("No more files")
+    else:
+        print("Load next image: " + files[position])
+        img1 = cv2.imread(path + files[position])
+        img1 = img1[:,:,::-1]
+        axes[0].imshow(img1, interpolation = 'bicubic')
+        axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
+        fig.canvas.set_window_title("Neural net image annotator - " + files[0])
+        plt.show()
 
 fig, axes = plt.subplots(1, 2, figsize=(16,6))
 plt.subplots_adjust(bottom=0.2)
-img1 = cv2.imread("test\\inp\\04_07536.png")
+img1 = cv2.imread(path + files[position])
 img1 = img1[:,:,::-1]
 axes[0].imshow(img1, interpolation = 'bicubic')
 axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
-fig.canvas.set_window_title("Neural net image annotator")
+fig.canvas.set_window_title("Neural net image annotator - " + files[0])
 
 axes[0].set_title("click to annotate")
 axes[1].set_title("preview")
@@ -122,10 +145,13 @@ axes[1].add_collection(p)
 
 axsave = plt.axes([0.81, 0.05, 0.1, 0.075])
 axnext = plt.axes([0.7, 0.05, 0.1, 0.075])
+axnextimage = plt.axes([0.25, 0.05, 0.1, 0.075])
+
+bnextimage = Button(axnextimage, 'Next image')
+bnextimage.on_clicked(load_next_image)
 bnext = Button(axnext, 'Next')
 bnext.on_clicked(linebuilder.next)
 bprev = Button(axsave, 'Save')
 bprev.on_clicked(linebuilder.save)
-
 
 plt.show()
