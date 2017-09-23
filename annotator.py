@@ -37,7 +37,6 @@ class LineBuilder:
                 c = '#781d8e'
             elif self.ind == 1:
                 c = '#f2e835'
-                print("printing line")
             elif self.ind == 2:
                 c = '#4286f4'
             else:
@@ -121,10 +120,7 @@ def load_next_image(event):
         print("No more files")
     else:
         global img1
-        global line
-        global patches
-        global polygon
-        global fig, axes, p, plt
+        global fig, axes, plt
     
         print("Load next image: " + files[position])
 
