@@ -75,8 +75,33 @@ class LineBuilder:
         self.ys = []
         self.line.set_data(self.xs, self.ys)
         
+    def undo(self):
+        if self.ind == 1:
+            self.poly1 = []
+        if self.ind == 2:
+            self.poly2 = []
+        if self.ind == 3:
+            self.poly3 = []
+        if self.ind == 4:
+            self.poly4 = []
+        if self.ind == 5:
+            self.poly5 = []
+        if self.ind == 6:
+            self.poly6 = []
+            
+        self.poly = []
+        self.xs = []
+        self.ys = []
+        self.line.set_data(self.xs, self.ys)    
+    
     def next(self, event):
         self.ind += 1
+        global fig
+        if self.ind == 2:
+            fig.canvas.set_window_title("Neural net image annotator - Akadály megjelölése")
+        if self.ind == 3:
+            fig.canvas.set_window_title("Neural net image annotator - Határoló megjelölése")
+
         self.poly = []
         self.xs = []
         self.ys = []
@@ -125,8 +150,9 @@ class LineBuilder:
             
             polygon1 = Polygon(self.poly1, True)
             patches1.append(polygon1)
-            polygon2 = Polygon(self.poly2, True)
-            patches2.append(polygon2)
+            if len(self.poly2) > 0:
+                polygon2 = Polygon(self.poly2, True)
+                patches2.append(polygon2)
             polygon3 = Polygon(self.poly3, True)
             patches3.append(polygon3)
             if len(self.poly4) > 0:
@@ -228,17 +254,25 @@ def load_next_image(event):
         axes[1].cla()
         plt.setp(axes, xticks=[], yticks=[])
         axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
-        fig.canvas.set_window_title("Neural net image annotator - " + files[position])
+        fig.canvas.set_window_title("Neural net image annotator - " + "Út megjelölése")
         
         linebuilder.clear()
         
+def undo(event):
+    axes[0].imshow(img1, interpolation = 'bicubic')
+    axes[1].cla()
+    plt.setp(axes, xticks=[], yticks=[])
+    axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
+    
+    linebuilder.undo()
+
 fig, axes = plt.subplots(1, 2, figsize=(16,6))
 plt.subplots_adjust(bottom=0.2)
 img1 = cv2.imread(path + files[position])
 img1 = img1[:,:,::-1]
 axes[0].imshow(img1, interpolation = 'bicubic')
 axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
-fig.canvas.set_window_title("Neural net image annotator - " + files[position])
+fig.canvas.set_window_title("Neural net image annotator - " + "Út megjelölése")
 
 axes[0].set_title("click to annotate")
 axes[1].set_title("preview")
@@ -256,9 +290,12 @@ axes[1].add_collection(p)
 axsave = plt.axes([0.81, 0.05, 0.1, 0.075])
 axnext = plt.axes([0.7, 0.05, 0.1, 0.075])
 axnextimage = plt.axes([0.25, 0.05, 0.1, 0.075])
+axundo = plt.axes([0.05, 0.05, 0.1, 0.075])
 
 bnextimage = Button(axnextimage, 'Next image')
 bnextimage.on_clicked(load_next_image)
+bundo = Button(axundo, 'Undo')
+bundo.on_clicked(undo)
 bnext = Button(axnext, 'Next annotation type')
 bnext.on_clicked(linebuilder.next)
 bprev = Button(axsave, 'Save')
