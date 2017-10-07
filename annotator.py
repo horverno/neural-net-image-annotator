@@ -13,6 +13,9 @@ class LineBuilder:
     poly1 = []
     poly2 = []
     poly3 = []
+    poly4 = []
+    poly5 = []
+    poly6 = []
     def __init__(self, line):
         self.line = line
         self.xs = []#list(line.get_xdata())
@@ -37,16 +40,25 @@ class LineBuilder:
             polygon = Polygon(self.poly, True)
             patches.append(polygon)
             if self.ind == 0:
-                c = '#781d8e'
+                c = '#000000'
             elif self.ind == 1:
-                c = '#f2e835'
+                c = '#014080'
                 self.poly1.append([event.xdata, event.ydata])
             elif self.ind == 2:
-                c = '#4286f4'
+                c = '#02ff80'
                 self.poly2.append([event.xdata, event.ydata])
-            else:
-                c = '#C0FFEE'
+            elif self.ind == 3:
+                c = '#038fff'
                 self.poly3.append([event.xdata, event.ydata])
+            elif self.ind == 4:
+                c = '#038fff'
+                self.poly4.append([event.xdata, event.ydata])
+            elif self.ind == 5:
+                c = '#038fff'
+                self.poly5.append([event.xdata, event.ydata])
+            else:
+                c = '#038fff'
+                self.poly6.append([event.xdata, event.ydata])
             p = PatchCollection(patches, color=c, alpha=0.4)
             axes[1].add_collection(p)
         
@@ -56,6 +68,9 @@ class LineBuilder:
         self.poly1 = []
         self.poly2 = []
         self.poly3 = []
+        self.poly4 = []
+        self.poly5 = []
+        self.poly6 = []
         self.xs = []
         self.ys = []
         self.line.set_data(self.xs, self.ys)
@@ -92,40 +107,97 @@ class LineBuilder:
             #axes[1].fill_between(self.xs, self.ys,color="green", alpha=0.5)
             self.line.set_data(self.xs, self.ys)
             self.line.figure.canvas.draw()
+            patches0 = []
             patches1 = []
             patches2 = []
             patches3 = []
-
+            patches4 = []
+            patches5 = []
+            patches6 = []
+            
+            poly0 = []
+            poly0.append([0, 0])
+            poly0.append([0, width])
+            poly0.append([width, width])
+            poly0.append([width, 0])
+            polygon0 = Polygon(poly0, True)
+            patches0.append(polygon0)
+            
             polygon1 = Polygon(self.poly1, True)
             patches1.append(polygon1)
             polygon2 = Polygon(self.poly2, True)
             patches2.append(polygon2)
             polygon3 = Polygon(self.poly3, True)
             patches3.append(polygon3)
-            
-            p1 = PatchCollection(patches1, color='#f2e835', alpha=0.4)
+            if len(self.poly4) > 0:
+                polygon4 = Polygon(self.poly4, True)
+                patches4.append(polygon4)
+            if len(self.poly5) > 0:
+                polygon5 = Polygon(self.poly5, True)
+                patches5.append(polygon5)
+            if len(self.poly6) > 0:
+                polygon6 = Polygon(self.poly6, True)
+                patches6.append(polygon6)
+            # Hatter
+            p0 = PatchCollection(patches0, color='#000000', alpha=0.4)
+            axes[1].add_collection(p0)
+            for patch0 in patches0:
+                patch0.set_color('#000000')
+                patch0.alpha=0.4
+                ax.add_patch(patch0)
+                
+            # Ut kategoria
+            p1 = PatchCollection(patches1, color='#014080', alpha=0.4)
             axes[1].add_collection(p1)
-            for patch in patches1:
-                patch.set_color('#f2e835')
-                patch.alpha=0.4
-                ax.add_patch(patch)
+            for patch1 in patches1:
+                patch1.set_color('#014080')
+                patch1.alpha=0.4
+                ax.add_patch(patch1)
             
-            p2 = PatchCollection(patches2, color='#4286f4', alpha=0.4)
-            axes[1].add_collection(p2)
-            for patch2 in patches2:
-                patch2.set_color('#4286f4')
-                patch.alpha=0.4
-                ax.add_patch(patch2)
-            
-            p3 = PatchCollection(patches3, color='#C0FFEE', alpha=0.4)
+            # Hatarolo
+            p3 = PatchCollection(patches3, color='#038fff', alpha=0.4)
             axes[1].add_collection(p3)
             for patch3 in patches3:
-                patch3.set_color('#C0FFEE')
-                patch.alpha=0.4
+                patch3.set_color('#038fff')
+                patch3.alpha=0.4
                 ax.add_patch(patch3)
         
-        ax.imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
-        fig2.savefig(str(position) + '.jpg', dpi=dpi)
+            # Hatarolo
+            p4 = PatchCollection(patches4, color='#038fff', alpha=0.4)
+            axes[1].add_collection(p4)
+            for patch4 in patches4:
+                patch4.set_color('#038fff')
+                patch4.alpha=0.4
+                ax.add_patch(patch4)
+                
+            # Hatarolo
+            p5 = PatchCollection(patches5, color='#038fff', alpha=0.4)
+            axes[1].add_collection(p5)
+            for patch5 in patches5:
+                patch5.set_color('#038fff')
+                patch5.alpha=0.4
+                ax.add_patch(patch5)
+                
+            # Hatarolo
+            p6 = PatchCollection(patches6, color='#038fff', alpha=0.4)
+            axes[1].add_collection(p6)
+            for patch6 in patches6:
+                patch6.set_color('#038fff')
+                patch6.alpha=0.4
+                ax.add_patch(patch6)
+
+            # Jarmu vagy egyeb uton levo targy
+            p2 = PatchCollection(patches2, color='#02ff80', alpha=0.4)
+            axes[1].add_collection(p2)
+            for patch2 in patches2:
+                patch2.set_color('#02ff80')
+                patch2.alpha=0.4
+                ax.add_patch(patch2)
+
+        ax.imshow(img1[:,:,0])
+        #ax.imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
+
+        fig2.savefig("out/" + files[position], dpi=dpi)
         plt.show()
         #fig2.set_size_inches(30, fig.get_figheight(), forward=True)
         print("saved %dx%d" % (width, height) )
