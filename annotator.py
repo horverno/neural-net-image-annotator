@@ -238,14 +238,14 @@ for (dirpath, dirnames, filenames) in walk(path):
 
 def load_next_image(event):
     global position
-    position += 1
     
-    if position >= len(files):
+    if position + 1 >= len(files):
         print("No more files")
     else:
         global img1
         global fig, axes, plt
     
+        position += 1
         print("Load next image: " + files[position])
 
         img1 = cv2.imread(path + files[position])
