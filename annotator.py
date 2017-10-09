@@ -16,6 +16,7 @@ class LineBuilder:
     poly4 = []
     poly5 = []
     poly6 = []
+    poly7 = []
     def __init__(self, line):
         self.line = line
         self.xs = []#list(line.get_xdata())
@@ -48,17 +49,20 @@ class LineBuilder:
                 c = '#02ff80'
                 self.poly2.append([event.xdata, event.ydata])
             elif self.ind == 3:
-                c = '#038fff'
+                c = '#02ff80'
                 self.poly3.append([event.xdata, event.ydata])
             elif self.ind == 4:
-                c = '#038fff'
+                c = '#02ff80'
                 self.poly4.append([event.xdata, event.ydata])
             elif self.ind == 5:
                 c = '#038fff'
                 self.poly5.append([event.xdata, event.ydata])
-            else:
+            elif self.ind == 6:
                 c = '#038fff'
                 self.poly6.append([event.xdata, event.ydata])
+            elif self.ind == 7:
+                c = '#038fff'
+                self.poly7.append([event.xdata, event.ydata])
             p = PatchCollection(patches, color=c, alpha=0.4)
             axes[1].add_collection(p)
         
@@ -71,6 +75,7 @@ class LineBuilder:
         self.poly4 = []
         self.poly5 = []
         self.poly6 = []
+        self.poly7 = []
         self.xs = []
         self.ys = []
         self.line.set_data(self.xs, self.ys)
@@ -88,6 +93,8 @@ class LineBuilder:
             self.poly5 = []
         if self.ind == 6:
             self.poly6 = []
+        if self.ind == 7:
+            self.poly = []
             
         self.poly = []
         self.xs = []
@@ -98,8 +105,12 @@ class LineBuilder:
         self.ind += 1
         global fig
         if self.ind == 2:
-            fig.canvas.set_window_title("Neural net image annotator - Akadály megjelölése")
+            fig.canvas.set_window_title("Neural net image annotator - Akadály megjelölése #1")
         if self.ind == 3:
+            fig.canvas.set_window_title("Neural net image annotator - Akadály megjelölése #2")
+        if self.ind == 4:
+            fig.canvas.set_window_title("Neural net image annotator - Akadály megjelölése #3")
+        if self.ind == 5:
             fig.canvas.set_window_title("Neural net image annotator - Határoló megjelölése")
 
         self.poly = []
@@ -139,6 +150,7 @@ class LineBuilder:
             patches4 = []
             patches5 = []
             patches6 = []
+            patches7 = []
             
             poly0 = []
             poly0.append([0, 0])
@@ -153,8 +165,9 @@ class LineBuilder:
             if len(self.poly2) > 0:
                 polygon2 = Polygon(self.poly2, True)
                 patches2.append(polygon2)
-            polygon3 = Polygon(self.poly3, True)
-            patches3.append(polygon3)
+            if len(self.poly3) > 0:
+                polygon3 = Polygon(self.poly3, True)
+                patches3.append(polygon3)
             if len(self.poly4) > 0:
                 polygon4 = Polygon(self.poly4, True)
                 patches4.append(polygon4)
@@ -164,6 +177,10 @@ class LineBuilder:
             if len(self.poly6) > 0:
                 polygon6 = Polygon(self.poly6, True)
                 patches6.append(polygon6)
+            if len(self.poly7) > 0:
+                polygon7 = Polygon(self.poly7, True)
+                patches7.append(polygon7)
+                
             # Hatter
             p0 = PatchCollection(patches0, color='#000000', alpha=0.4)
             axes[1].add_collection(p0)
@@ -180,22 +197,7 @@ class LineBuilder:
                 patch1.alpha=0.4
                 ax.add_patch(patch1)
             
-            # Hatarolo
-            p3 = PatchCollection(patches3, color='#038fff', alpha=0.4)
-            axes[1].add_collection(p3)
-            for patch3 in patches3:
-                patch3.set_color('#038fff')
-                patch3.alpha=0.4
-                ax.add_patch(patch3)
-        
-            # Hatarolo
-            p4 = PatchCollection(patches4, color='#038fff', alpha=0.4)
-            axes[1].add_collection(p4)
-            for patch4 in patches4:
-                patch4.set_color('#038fff')
-                patch4.alpha=0.4
-                ax.add_patch(patch4)
-                
+            
             # Hatarolo
             p5 = PatchCollection(patches5, color='#038fff', alpha=0.4)
             axes[1].add_collection(p5)
@@ -203,7 +205,7 @@ class LineBuilder:
                 patch5.set_color('#038fff')
                 patch5.alpha=0.4
                 ax.add_patch(patch5)
-                
+            
             # Hatarolo
             p6 = PatchCollection(patches6, color='#038fff', alpha=0.4)
             axes[1].add_collection(p6)
@@ -211,7 +213,15 @@ class LineBuilder:
                 patch6.set_color('#038fff')
                 patch6.alpha=0.4
                 ax.add_patch(patch6)
-
+        
+            # Hatarolo
+            p7 = PatchCollection(patches7, color='#038fff', alpha=0.4)
+            axes[1].add_collection(p7)
+            for patch7 in patches7:
+                patch7.set_color('#038fff')
+                patch7.alpha=0.4
+                ax.add_patch(patch7)
+  
             # Jarmu vagy egyeb uton levo targy
             p2 = PatchCollection(patches2, color='#02ff80', alpha=0.4)
             axes[1].add_collection(p2)
@@ -219,11 +229,27 @@ class LineBuilder:
                 patch2.set_color('#02ff80')
                 patch2.alpha=0.4
                 ax.add_patch(patch2)
+                
+            # Jarmu vagy egyeb uton levo targy
+            p3 = PatchCollection(patches3, color='#02ff80', alpha=0.4)
+            axes[1].add_collection(p3)
+            for patch3 in patches3:
+                patch3.set_color('#02ff80')
+                patch3.alpha=0.4
+                ax.add_patch(patch3)
+                
+            # Jarmu vagy egyeb uton levo targy
+            p4 = PatchCollection(patches4, color='#02ff80', alpha=0.4)
+            axes[1].add_collection(p4)
+            for patch4 in patches4:
+                patch4.set_color('#02ff80')
+                patch4.alpha=0.4
+                ax.add_patch(patch4)
 
         ax.imshow(img1[:,:,0])
         #ax.imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
 
-        fig2.savefig("out/" + files[position], dpi=dpi)
+        fig2.savefig("test\\out\\" + files[position], dpi=dpi)
         plt.show()
         #fig2.set_size_inches(30, fig.get_figheight(), forward=True)
         print("saved %dx%d" % (width, height) )
