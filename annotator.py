@@ -130,17 +130,23 @@ class LineBuilder:
         figsize = width / float(dpi), height / float(dpi)
         # Create a figure of the right size with one axes that takes up the full figure
         fig2 = plt.figure(figsize=figsize)
+        fig3 = plt.figure(figsize=figsize)
         ax = fig2.add_axes([0, 0, 1, 1])
+        ax2 = fig3.add_axes([0, 0, 1, 1])
         # Hide spines, ticks, etc.
         ax.axis('off')
         ax.imshow(im_data, interpolation='nearest')
+        ax2.axis('off')
+        ax2.imshow(im_data, interpolation='nearest')
         # Ensure we're displaying with square pixels and the right extent.
         # This is optional if you haven't called `plot` or anything else that might
         # change the limits/aspect.  We don't need this step in this case.
         ax.set(xlim=[0, width], ylim=[height, 0], aspect=1)
+        #ax2.set(xlim=[0, width], ylim=[height, 0], aspect=1)
         
         if np.shape(self.xs)[0] > 1:
             #axes[1].fill_between(self.xs, self.ys,color="green", alpha=0.5)
+            
             self.line.set_data(self.xs, self.ys)
             self.line.figure.canvas.draw()
             patches0 = []
@@ -181,66 +187,58 @@ class LineBuilder:
                 polygon7 = Polygon(self.poly7, True)
                 patches7.append(polygon7)
                 
+            # Mer - Ellenorzeshez
+            ax2.add_collection(PatchCollection(patches1, color='#014080', alpha=0.4))
+            ax2.add_collection(PatchCollection(patches5, color='#038fff', alpha=0.4))
+            ax2.add_collection(PatchCollection(patches6, color='#038fff', alpha=0.4))
+            ax2.add_collection(PatchCollection(patches7, color='#038fff', alpha=0.4))
+            ax2.add_collection(PatchCollection(patches2, color='#02ff80', alpha=0.4))
+            ax2.add_collection(PatchCollection(patches3, color='#02ff80', alpha=0.4))
+            ax2.add_collection(PatchCollection(patches4, color='#02ff80', alpha=0.4))
+
             # Hatter
-            p0 = PatchCollection(patches0, color='#000000', alpha=0.4)
-            axes[1].add_collection(p0)
             for patch0 in patches0:
                 patch0.set_color('#000000')
                 patch0.alpha=0.4
                 ax.add_patch(patch0)
                 
             # Ut kategoria
-            p1 = PatchCollection(patches1, color='#014080', alpha=0.4)
-            axes[1].add_collection(p1)
             for patch1 in patches1:
                 patch1.set_color('#014080')
                 patch1.alpha=0.4
                 ax.add_patch(patch1)
             
-            
             # Hatarolo
-            p5 = PatchCollection(patches5, color='#038fff', alpha=0.4)
-            axes[1].add_collection(p5)
             for patch5 in patches5:
                 patch5.set_color('#038fff')
                 patch5.alpha=0.4
                 ax.add_patch(patch5)
             
             # Hatarolo
-            p6 = PatchCollection(patches6, color='#038fff', alpha=0.4)
-            axes[1].add_collection(p6)
             for patch6 in patches6:
                 patch6.set_color('#038fff')
                 patch6.alpha=0.4
                 ax.add_patch(patch6)
         
             # Hatarolo
-            p7 = PatchCollection(patches7, color='#038fff', alpha=0.4)
-            axes[1].add_collection(p7)
             for patch7 in patches7:
                 patch7.set_color('#038fff')
                 patch7.alpha=0.4
                 ax.add_patch(patch7)
   
             # Jarmu vagy egyeb uton levo targy
-            p2 = PatchCollection(patches2, color='#02ff80', alpha=0.4)
-            axes[1].add_collection(p2)
             for patch2 in patches2:
                 patch2.set_color('#02ff80')
                 patch2.alpha=0.4
                 ax.add_patch(patch2)
                 
             # Jarmu vagy egyeb uton levo targy
-            p3 = PatchCollection(patches3, color='#02ff80', alpha=0.4)
-            axes[1].add_collection(p3)
             for patch3 in patches3:
                 patch3.set_color('#02ff80')
                 patch3.alpha=0.4
                 ax.add_patch(patch3)
                 
             # Jarmu vagy egyeb uton levo targy
-            p4 = PatchCollection(patches4, color='#02ff80', alpha=0.4)
-            axes[1].add_collection(p4)
             for patch4 in patches4:
                 patch4.set_color('#02ff80')
                 patch4.alpha=0.4
@@ -248,8 +246,10 @@ class LineBuilder:
 
         ax.imshow(img1[:,:,0])
         #ax.imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
+ 
 
         fig2.savefig("test\\out\\" + files[position], dpi=dpi)
+        fig3.savefig("test\\mer\\" + files[position], dpi=dpi)
         plt.show()
         #fig2.set_size_inches(30, fig.get_figheight(), forward=True)
         print("saved %dx%d" % (width, height) )
