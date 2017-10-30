@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import tkinter
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
@@ -255,26 +256,38 @@ class LineBuilder:
         print("saved %dx%d" % (width, height) )
         
 # Get file names
-path = "test\\inp\\"
+pathTest = "test\\inp\\"
+pathVal = "val\\inp\\"
+pathTrain = "train\\inp\\"
 files = []
+filesPath = []
 position = 0
-for (dirpath, dirnames, filenames) in walk(path):
+for (dirpath, dirnames, filenames) in walk(pathTest):
     files.extend(filenames)
+    for _ in range(0,len(filenames)):
+        filesPath.append(pathTest)
     break
-
+for (dirpath, dirnames, filenames) in walk(pathVal):
+    files.extend(filenames)
+    filesPath.append(pathVal)
+    break
+for (dirpath, dirnames, filenames) in walk(pathTrain):
+    files.extend(filenames)
+    filesPath.append(pathTrain)
+    break
 def load_next_image(event):
     global position
-    
-    if position + 1 >= len(files):
+    if position + 1 >= len(files) or position + 1 >= len(filesPath):
         print("No more files")
+
     else:
         global img1
         global fig, axes, plt
     
         position += 1
-        print("Load next image: " + files[position])
+        print("Load next image: " + filesPath[position] + files[position])
 
-        img1 = cv2.imread(path + files[position])
+        img1 = cv2.imread(filesPath[position] + files[position])
         img1 = img1[:,:,::-1]
         axes[0].imshow(img1, interpolation = 'bicubic')
         axes[1].cla()
@@ -294,7 +307,10 @@ def undo(event):
 
 fig, axes = plt.subplots(1, 2, figsize=(16,6))
 plt.subplots_adjust(bottom=0.2)
-img1 = cv2.imread(path + files[position])
+img1 = cv2.imread(filesPath[position] + files[position])
+
+print(filesPath[position] + files[position])
+
 img1 = img1[:,:,::-1]
 axes[0].imshow(img1, interpolation = 'bicubic')
 axes[1].imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
