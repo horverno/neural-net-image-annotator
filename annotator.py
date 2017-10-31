@@ -249,31 +249,33 @@ class LineBuilder:
         #ax.imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
  
 
-        fig2.savefig(filesPath[position]+"out\\" + files[position], dpi=dpi)
-        fig3.savefig(filesPath[position]+"mer\\" + files[position], dpi=dpi)
+        fig2.savefig(filesPath[position]+ "out\\" + files[position], dpi=dpi)
+        fig3.savefig(filesPath[position]+ "mer\\" + files[position], dpi=dpi)
         plt.show()
         #fig2.set_size_inches(30, fig.get_figheight(), forward=True)
         print("saved %dx%d" % (width, height) )
         
 # Get file names
-pathTest = "test\\inp\\"
-pathVal = "val\\inp\\"
-pathTrain = "train\\inp\\"
+pathTest = "test\\"
+pathVal = "val\\"
+pathTrain = "train\\"
 files = []
 filesPath = []
 position = 0
-for (dirpath, dirnames, filenames) in walk(pathTest):
+for (dirpath, dirnames, filenames) in walk(pathTest + "inp\\"):
     files.extend(filenames)
     for _ in range(0,len(filenames)):
         filesPath.append(pathTest)
     break
-for (dirpath, dirnames, filenames) in walk(pathVal):
+for (dirpath, dirnames, filenames) in walk(pathVal + "inp\\"):
     files.extend(filenames)
-    filesPath.append(pathVal)
+    for _ in range(0,len(filenames)):
+        filesPath.append(pathVal)
     break
-for (dirpath, dirnames, filenames) in walk(pathTrain):
+for (dirpath, dirnames, filenames) in walk(pathTrain + "inp\\"):
     files.extend(filenames)
-    filesPath.append(pathTrain)
+    for _ in range(0,len(filenames)):
+        filesPath.append(pathTrain)
     break
 def load_next_image(event):
     global position
@@ -285,9 +287,9 @@ def load_next_image(event):
         global fig, axes, plt
     
         position += 1
-        print("Load next image: " + filesPath[position] + files[position])
+        print("Load next image: " + filesPath[position] + "inp\\" + files[position])
 
-        img1 = cv2.imread(filesPath[position] + files[position])
+        img1 = cv2.imread(filesPath[position] + "inp\\" + files[position])
         img1 = img1[:,:,::-1]
         axes[0].imshow(img1, interpolation = 'bicubic')
         axes[1].cla()
@@ -307,9 +309,10 @@ def undo(event):
 
 fig, axes = plt.subplots(1, 2, figsize=(16,6))
 plt.subplots_adjust(bottom=0.2)
-img1 = cv2.imread(filesPath[position] + files[position])
 
-print(filesPath[position] + files[position])
+print("Load first image: " + filesPath[position] + "inp\\" + files[position])
+img1 = cv2.imread(filesPath[position] + "inp\\" + files[position])
+
 
 img1 = img1[:,:,::-1]
 axes[0].imshow(img1, interpolation = 'bicubic')
