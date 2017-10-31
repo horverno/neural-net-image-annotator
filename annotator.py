@@ -249,8 +249,8 @@ class LineBuilder:
         #ax.imshow(img1[:,:,0], cmap= "Purples_r", interpolation = 'bicubic')
  
 
-        fig2.savefig("test\\out\\" + files[position], dpi=dpi)
-        fig3.savefig("test\\mer\\" + files[position], dpi=dpi)
+        fig2.savefig(filesPath[position]+"out\\" + files[position], dpi=dpi)
+        fig3.savefig(filesPath[position]+"mer\\" + files[position], dpi=dpi)
         plt.show()
         #fig2.set_size_inches(30, fig.get_figheight(), forward=True)
         print("saved %dx%d" % (width, height) )
